@@ -1,0 +1,50 @@
+<mat-card>
+
+  <mat-card-subtitle>Enter Transaction Details</mat-card-subtitle>
+
+  <mat-card-content>
+
+    <div fxLayout="column" fxLayoutGap="10px">
+
+      <form fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="20px" [formGroup]="trasactionForm" id="transcaction-form" (submit)="saveTransaction()">
+
+        <!-- will take transcaction type -->
+        <mat-form-field fxFlex>
+          <mat-placeholder>Select Transaction Type</mat-placeholder>
+          <mat-select formControlName="transasctionType" [errorStateMatcher]="errorMatcher">
+            <mat-option *ngFor="let type of tranactionType" [value]="type">{{ type.label }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="trasactionForm.get('transasctionType').hasError('required')">
+            Tranaction Type is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- will take money spent -->
+        <mat-form-field fxFlex>
+          <mat-placeholder>Money Spent</mat-placeholder>
+          <input matInput type="number" formControlName="moneySpent" [errorStateMatcher]="errorMatcher" />
+          <mat-error *ngIf="trasactionForm.get('moneySpent').hasError('required')">
+            Money Spent is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- will take transaction description -->
+        <mat-form-field fxFlex>
+          <mat-placeholder>Breif Description</mat-placeholder>
+          <input matInput type="text" formControlName="description" [errorStateMatcher]="errorMatcher" />
+        </mat-form-field>
+
+      </form>
+
+      <div fxLayout="row">
+        <button form="transcaction-form" fxFlex="0 0 auto"
+        fxFlex.sm="1 1 auto" fxFlex.xs="1 1 auto"
+        type="submit" mat-raised-button color="primary">Add</button>
+      </div>
+
+    </div>
+
+  </mat-card-content>
+</mat-card>
