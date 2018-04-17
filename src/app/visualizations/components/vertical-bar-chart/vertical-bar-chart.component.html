@@ -1,18 +1,10 @@
 <mat-card>
     <div style="height: 400px">
-        <ngx-charts-bar-vertical
-            [gradient]="true"
+        <ngx-charts-advanced-pie-chart  
             [scheme]="colorScheme"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [barPadding]="30"
-            [yAxisLabel]="yAxisLabel"
-            [yAxisTickFormatting]="yAxisFormatterFactory()"
-            [results]="results">
-        </ngx-charts-bar-vertical>
+            [results]="results"
+            [gradient]="gradient"
+            (select)="onSelect($event)">
+          </ngx-charts-advanced-pie-chart>
     </div>
 </mat-card>
