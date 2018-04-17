@@ -1,0 +1,1 @@
+export * from './money-spent-form.component';

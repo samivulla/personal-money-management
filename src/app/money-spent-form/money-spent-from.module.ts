@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MoneySpentFormComponent } from './money-spent-form.component';
 import { ReactiveFormsModule } from '@angular/forms'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,15 +9,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
-import { StoreModule, ActionReducerMap } from '@ngrx/store';   
-
-import { moneySpentFromReducer } from './money-spent-from.reducers';
-
-
-
-export const reducers: ActionReducerMap<any> = {
-    transactions: moneySpentFromReducer
-}
+import { MoneySpentFormComponent } from './containers';
+import { ShowOnSubmitted } from './services';
+import { SharedModule } from '../shared/shared.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -29,8 +24,12 @@ export const reducers: ActionReducerMap<any> = {
         FlexLayoutModule,
         MatSelectModule,
         MatButtonModule,
-        MatCardModule
+        SharedModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
+    providers: [ShowOnSubmitted],
     declarations: [MoneySpentFormComponent],
     exports: [MoneySpentFormComponent]
 })

@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Delete Item</h2>
+<mat-dialog-content class="black-54">
+    <strong>{{message || 'Are you sure you want to do this?' }}</strong>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+    <button mat-button mat-dialog-close color="primary"><strong>No</strong></button>
+    <button mat-button [mat-dialog-close]="true" color="primary"><strong>Yes</strong></button>
+</mat-dialog-actions>

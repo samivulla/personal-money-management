@@ -1,9 +1,13 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ShowOnSubmitted } from './custom-error-matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { DecimalPipe } from '@angular/common';
-import { Transaction, TransactionType } from '../models';
+import { Transaction, TransactionType } from '../../models';
+import { ShowOnSubmitted } from '../services';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store';
+import { ADD_TRANSACTION} from '../../store/transactions';
+import { UniqueIDGenerator } from '../../shared/services';
 
 @Component({
   selector: 'app-money-spent-form',
@@ -13,14 +17,16 @@ import { Transaction, TransactionType } from '../models';
 })
 export class MoneySpentFormComponent implements OnInit {
 
-  private trasactionForm: FormGroup;
-  private tranactionType: TransactionType[];
-  private transactionFormSubmitted = false;
-  private errorMatcher: ErrorStateMatcher;
+  trasactionForm: FormGroup;
+  tranactionType: TransactionType[];
 
-  constructor(private fb: FormBuilder, private decimalPipe: DecimalPipe) {
-    this.errorMatcher = new ShowOnSubmitted();
-  }
+  constructor(
+    private fb: FormBuilder,
+    private decimalPipe: DecimalPipe,
+    public errorMatcher: ShowOnSubmitted,
+    private store: Store<AppState>,
+   private idGenerator: UniqueIDGenerator
+  ) { }
 
   ngOnInit() {
     this.setUpTheForm();
@@ -29,8 +35,8 @@ export class MoneySpentFormComponent implements OnInit {
 
   getTranasctionTypes() {
     this.tranactionType = [{
-      id: 'GROCERY',
-      label: 'Grocery'
+      id: 'FOOD',
+      label: 'Food'
     }, {
       id: 'SHOPPING',
       label: 'Shopping '
@@ -44,17 +50,21 @@ export class MoneySpentFormComponent implements OnInit {
     this.trasactionForm = this.fb.group({
       transasctionType: [null, Validators.required],
       moneySpent: [null, Validators.required],
-      description: [null]
+      description: [null],
+      date: [new Date]
     });
   }
 
+  resetForm() {
+    this.trasactionForm.reset();
+  }
+
   saveTransaction() {
-    this.transactionFormSubmitted = true;
     if (this.trasactionForm.valid) {
-      const transaction = Object.assign({}, this.trasactionForm.value);
-      console.log(transaction);
-      this.trasactionForm.markAsPristine();
-      this.trasactionForm.reset();
+      const transaction: Transaction = Object.assign({}, this.trasactionForm.value);
+      transaction.id = this.idGenerator.getUniqueId();
+      this.store.dispatch({ type: ADD_TRANSACTION, payload: transaction });
+      this.resetForm();   
     }
   }
 

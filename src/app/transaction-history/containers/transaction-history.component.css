@@ -1,0 +1,9 @@
+.mat-col-actions {
+    flex: 0 1 50px;
+}
+
+.mat-col-selection {
+    flex: 0 1 50px;
+}
+
+mat-cell.mat-cell, mat-header-cell.mat-header-cell { overflow: visible; }

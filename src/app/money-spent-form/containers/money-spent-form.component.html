@@ -6,7 +6,8 @@
 
     <div fxLayout="column" fxLayoutGap="10px">
 
-      <form fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="20px" [formGroup]="trasactionForm" id="transcaction-form" (submit)="saveTransaction()">
+      <form fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="20px" [formGroup]="trasactionForm" id="transcaction-form"
+        (submit)="saveTransaction()">
 
         <!-- will take transcaction type -->
         <mat-form-field fxFlex>
@@ -33,15 +34,24 @@
         <!-- will take transaction description -->
         <mat-form-field fxFlex>
           <mat-placeholder>Breif Description</mat-placeholder>
-          <input matInput type="text" formControlName="description" [errorStateMatcher]="errorMatcher" />
+          <input matInput type="text" formControlName="description" />
+        </mat-form-field>
+
+        <!-- will take date -->
+        <mat-form-field fxFlex>
+          <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date" [errorStateMatcher]="errorMatcher">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="trasactionForm.get('date').invalid">
+            Enter a valid date
+          </mat-error>
         </mat-form-field>
 
       </form>
 
       <div fxLayout="row">
-        <button form="transcaction-form" fxFlex="0 0 auto"
-        fxFlex.sm="1 1 auto" fxFlex.xs="1 1 auto"
-        type="submit" mat-raised-button color="primary">Add</button>
+        <button form="transcaction-form" fxFlex="0 0 auto" fxFlex.sm="1 1 auto" fxFlex.xs="1 1 auto" type="submit" mat-raised-button
+          color="primary">Add</button>
       </div>
 
     </div>
