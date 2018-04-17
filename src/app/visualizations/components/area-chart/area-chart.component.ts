@@ -3,12 +3,12 @@ import { COLOR_SETS } from '../../services';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-line-chart',
-    templateUrl: './line-chart.component.html',
-    styleUrls: ['./line-chart.component.css'],
+    selector: 'app-area-chart',
+    templateUrl: './area-chart.component.html',
+    styleUrls: ['./area-chart.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineChartComponent {
+export class AreaChartComponent {
 
     @Input()
     results;
@@ -23,6 +23,7 @@ export class LineChartComponent {
     yAxisLabel = 'Money';
     SCHEME_NAME = 'neons';
     colorScheme = (this.colorSet as Array<any>).find(val => val.name === this.SCHEME_NAME);
+
 
     constructor(@Inject(COLOR_SETS) private colorSet, private currencyPipe: CurrencyPipe) { }
 

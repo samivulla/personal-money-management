@@ -3,12 +3,12 @@ import { COLOR_SETS } from '../../services';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-vertical-chart',
-    templateUrl: './vertical-bar-chart.component.html',
-    styleUrls: ['./vertical-bar-chart.component.css'],
+    selector: 'app-pie-chart',
+    templateUrl: './pie-chart.component.html',
+    styleUrls: ['./pie-chart.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VerticalChartComponent {
+export class PieChartComponent {
 
     @Input()
     results: { name: string, value: number }[];
@@ -24,12 +24,5 @@ export class VerticalChartComponent {
     SCHEME_NAME = 'neons';
     colorScheme = (this.colorSet as Array<any>).find(val => val.name === this.SCHEME_NAME);
 
-    constructor(@Inject(COLOR_SETS) private colorSet,  private currencyPipe: CurrencyPipe) { }
-
-    yAxisFormatterFactory() {
-        return (val) => {
-            return this.currencyPipe.transform(val, 'INR', 'symbol');
-        }
-    }
-
+    constructor(@Inject(COLOR_SETS) private colorSet ) { }
 }

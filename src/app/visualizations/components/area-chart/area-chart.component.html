@@ -1,6 +1,6 @@
 <mat-card>
-    <div style="height: 400px">
-        <ngx-charts-line-chart
+    <div style="height: 300px">
+        <ngx-charts-area-chart-stacked
             [scheme]="colorScheme"
             [results]="results"
             [xAxis]="showXAxis"
@@ -13,7 +13,7 @@
             [showGridLines]="true"
             [yAxisTickFormatting]="yAxisFormatterFactory()"
             [gradient]="true">
-            </ngx-charts-line-chart>
+            </ngx-charts-area-chart-stacked>
     </div>
 </mat-card>
     

@@ -15,7 +15,7 @@ export class VisualizationComponent implements OnInit {
     private transactions$: Observable<Transaction[]>;
     private subscription: Subscription;
     barChartData: { name: string; value: number }[];
-    lineChartData;
+    areaChartData;
 
     constructor(private store: Store<AppState>) {
         this.transactions$ = this.store.pipe(select(getTransactions));
@@ -27,7 +27,7 @@ export class VisualizationComponent implements OnInit {
 
     makeChartData(data: Transaction[]) {
         this.barChartData = this.makeBarChartData(data);
-        this.lineChartData = this.makeLineChartData(data);
+        this.areaChartData = this.makeAreaChartData(data);
     }
 
     makeBarChartData(data: Transaction[]) {
@@ -46,18 +46,20 @@ export class VisualizationComponent implements OnInit {
             });
     }
 
-    makeLineChartData(data: Transaction[]) {
-        return data.reduce((acc, val) => {
-            let transactionType = val.transasctionType.id,
-                accItem = acc.find(accVal => accVal.name === transactionType),
-                toPush = { name: val.date, value: val.moneySpent, description: val.description };
-            if (accItem) {
-                accItem.series.push(toPush);
-            } else {
-                acc.push({ name: transactionType, series: [toPush] });
-            }
-            return acc;
-        }, []);
+    makeAreaChartData(data: Transaction[]) {
+        return ['FOOD', 'OTHERS', 'SHOPPING'].map((type) => {
+            return { name: type, series: this.areaChartDataAggregator(data, type) };
+        });
+    }
+
+    private areaChartDataAggregator(data, type) {
+        return data.filter(val => val.transasctionType.id === type)
+            .reduce((acc, val) => {
+                let item = acc.find(accVal => accVal.name === val.date);
+                if (item) item.value += val.moneySpent;
+                else acc.push({ name: val.date, value: val.moneySpent });
+                return acc;
+            }, []);
     }
 
 }                                          
