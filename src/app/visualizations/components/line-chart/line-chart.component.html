@@ -1,0 +1,20 @@
+<mat-card>
+    <div style="height: 400px">
+        <ngx-charts-line-chart
+            [scheme]="colorScheme"
+            [results]="results"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [showGridLines]="true"
+            [yAxisTickFormatting]="yAxisFormatterFactory()"
+            [gradient]="true"
+            [autoScale]="autoScale">
+            </ngx-charts-line-chart>
+    </div>
+</mat-card>
+    

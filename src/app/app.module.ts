@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { MoneySpentFromModule } from './money-spent-form/money-spent-from.module';
 import { TransactionHistoryModule } from './transaction-history/transaction-history.module';
 import { InfoCardsModule } from './info-cards/info-cards.module';
+import { VisualizationModule } from './visualizations/visualizations.module';
+
 
 import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
 
@@ -30,6 +32,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     BrowserModule,
     InfoCardsModule,
     MoneySpentFromModule,
+    VisualizationModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({
       maxAge: 25
