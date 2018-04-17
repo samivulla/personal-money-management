@@ -27,6 +27,15 @@ export class AreaChartComponent {
 
     constructor(@Inject(COLOR_SETS) private colorSet, private currencyPipe: CurrencyPipe) { }
 
+    get hasData() {
+        let hasData = false;
+        this.results.forEach((val) => {
+            hasData = !!val.series.length;
+            if (hasData) return;
+        });
+        return hasData;
+    }
+
     yAxisFormatterFactory() {
         return (val) => {
             return this.currencyPipe.transform(val, 'INR', 'symbol');

@@ -9,7 +9,7 @@ import { CurrencyPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieChartComponent {
-
+    
     @Input()
     results: { name: string, value: number }[];
 
