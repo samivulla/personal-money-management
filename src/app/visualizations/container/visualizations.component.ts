@@ -33,11 +33,8 @@ export class VisualizationComponent implements OnInit {
     makeBarChartData(data: Transaction[]) {
         const reducedData = data.reduce((acc, val) => {
             let transactionId = val.transasctionType.id;
-            if (acc[transactionId]) {
-                acc[transactionId] += val.moneySpent;
-            } else {
-                acc[transactionId] = val.moneySpent;
-            }
+            if (acc[transactionId]) { acc[transactionId] += val.moneySpent; }
+            else { acc[transactionId] = val.moneySpent; }
             return acc;
         }, {});
         return Object.keys(reducedData)
