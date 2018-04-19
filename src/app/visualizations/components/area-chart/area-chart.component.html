@@ -14,7 +14,7 @@
             [yAxisTickFormatting]="yAxisFormatterFactory()"
             [gradient]="true">
             </ngx-charts-area-chart-stacked>
-        <div *ngIf="!hasData" class="no-data"><span>No Data</span></div>
+        <div *ngIf="!dataAvail" class="no-data"><span>No Data</span></div>
     </div>
 </mat-card>
     

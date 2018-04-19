@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { COLOR_SETS } from '../../services';
 import { CurrencyPipe } from '@angular/common';
 
@@ -8,7 +8,7 @@ import { CurrencyPipe } from '@angular/common';
     styleUrls: ['./area-chart.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AreaChartComponent {
+export class AreaChartComponent implements OnChanges {
 
     @Input()
     results;
@@ -22,13 +22,19 @@ export class AreaChartComponent {
     showYAxisLabel = true;
     yAxisLabel = 'Money';
     SCHEME_NAME = 'neons';
+    dataAvail = false;
     colorScheme = (this.colorSet as Array<any>).find(val => val.name === this.SCHEME_NAME);
-
 
     constructor(@Inject(COLOR_SETS) private colorSet, private currencyPipe: CurrencyPipe) { }
 
-    
-    get hasData() {
+
+    ngOnChanges(obj: SimpleChanges) {
+        if(this.results) {
+            this.dataAvail = this.hasData();
+        } 
+    }
+
+    hasData() {
         let _hasData = false;
         this.results.forEach((val) => {
             _hasData = !!val.series.length;
@@ -42,6 +48,5 @@ export class AreaChartComponent {
             return this.currencyPipe.transform(val, 'INR', 'symbol');
         }
     }
-
 
 }
