@@ -27,13 +27,14 @@ export class AreaChartComponent {
 
     constructor(@Inject(COLOR_SETS) private colorSet, private currencyPipe: CurrencyPipe) { }
 
+    
     get hasData() {
-        let hasData = false;
+        let _hasData = false;
         this.results.forEach((val) => {
-            hasData = !!val.series.length;
-            if (hasData) return;
+            _hasData = !!val.series.length;
+            if (_hasData) return;
         });
-        return hasData;
+        return _hasData;
     }
 
     yAxisFormatterFactory() {
