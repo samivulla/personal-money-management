@@ -29,17 +29,17 @@ export class AreaChartComponent implements OnChanges {
 
 
     ngOnChanges(obj: SimpleChanges) {
-        if(this.results) {
+        if (this.results) {
             this.dataAvail = this.hasData();
-        } 
+        }
     }
 
     hasData() {
         let _hasData = false;
-        this.results.forEach((val) => {
-            _hasData = !!val.series.length;
-            if (_hasData) return;
-        });
+        for (let i = 0, j = this.results.length; i < j; i++) {
+            _hasData = !!this.results[i].series.length;
+            if (_hasData) break;
+        }
         return _hasData;
     }
 
