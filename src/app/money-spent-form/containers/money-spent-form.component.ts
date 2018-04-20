@@ -6,7 +6,7 @@ import { Transaction, TransactionType } from '../../models';
 import { ShowOnSubmitted } from '../services';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store';
-import { ADD_TRANSACTION} from '../../store/transactions';
+import { AddTransaction } from '../../store/transactions';
 import { UniqueIDGenerator } from '../../shared/services';
 
 @Component({
@@ -25,7 +25,7 @@ export class MoneySpentFormComponent implements OnInit {
     private decimalPipe: DecimalPipe,
     public errorMatcher: ShowOnSubmitted,
     private store: Store<AppState>,
-   private idGenerator: UniqueIDGenerator
+    private idGenerator: UniqueIDGenerator
   ) { }
 
   ngOnInit() {
@@ -59,12 +59,16 @@ export class MoneySpentFormComponent implements OnInit {
     this.trasactionForm.reset();
   }
 
-  saveTransaction() {
+  getRandomNumber() {
+    return this.idGenerator.getUniqueId();  
+  }
+
+  saveTransaction(randomNumber = this.getRandomNumber()) {
     if (this.trasactionForm.valid) {
       const transaction: Transaction = Object.assign({}, this.trasactionForm.value);
-      transaction.id = this.idGenerator.getUniqueId();
-      this.store.dispatch({ type: ADD_TRANSACTION, payload: transaction });
-      this.resetForm();   
+      transaction.id = randomNumber;
+      this.store.dispatch(new AddTransaction(transaction));
+      this.resetForm();
     }
   }
 
