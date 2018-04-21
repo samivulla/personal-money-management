@@ -28,8 +28,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
   ],
   imports: [
     TransactionHistoryModule,
-    BrowserModule,
-    InfoCardsModule,
+    BrowserModule, 
     MoneySpentFromModule,
     VisualizationModule,
     StoreModule.forRoot(reducers, { metaReducers }),
