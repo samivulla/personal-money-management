@@ -12,7 +12,6 @@ import { UniqueIDGenerator } from '../../shared/services';
 @Component({
   selector: 'app-money-spent-form',
   templateUrl: './money-spent-form.component.html',
-  styleUrls: ['./money-spent-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MoneySpentFormComponent implements OnInit {
