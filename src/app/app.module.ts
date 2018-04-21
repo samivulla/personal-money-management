@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 
 import { MoneySpentFromModule } from './money-spent-form/money-spent-from.module';
 import { TransactionHistoryModule } from './transaction-history/transaction-history.module';
-import { InfoCardsModule } from './info-cards/info-cards.module';
 import { VisualizationModule } from './visualizations/visualizations.module';
 
 
