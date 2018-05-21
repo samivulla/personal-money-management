@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { COLOR_SETS } from '../../services';
 import { CurrencyPipe } from '@angular/common';
+import * as Highcharts from 'highcharts';
 
 @Component({
     selector: 'app-area-chart',
@@ -12,41 +13,52 @@ export class AreaChartComponent implements OnChanges {
 
     @Input()
     results;
-
-    showXAxis = true;
-    showYAxis = true;
-    gradient = false;
-    showLegend = true;
-    showXAxisLabel = true;
-    xAxisLabel = 'Time';
-    showYAxisLabel = true;
-    yAxisLabel = 'Money';
-    SCHEME_NAME = 'neons';
     dataAvail = false;
-    colorScheme = (this.colorSet as Array<any>).find(val => val.name === this.SCHEME_NAME);
+    highcharts: any;
+    chartOptions: any;
+    updateChart: boolean;
 
-    constructor(@Inject(COLOR_SETS) private colorSet, private currencyPipe: CurrencyPipe) { }
-
+    constructor(private currencyPipe: CurrencyPipe) {
+        this.highcharts = Highcharts;
+        this.initCharts();
+    }
 
     ngOnChanges(obj: SimpleChanges) {
         if (this.results) {
-            this.dataAvail = this.hasData();
+            this.chartOptions.series = this.results;
+            this.updateChart = true;
         }
     }
 
-    hasData() {
-        let _hasData = false;
-        for (let i = 0, j = this.results.length; i < j; i++) {
-            _hasData = !!this.results[i].series.length;
-            if (_hasData) break;
-        }
-        return _hasData;
-    }
-
-    yAxisFormatterFactory() {
-        return (val) => {
-            return this.currencyPipe.transform(val, 'INR', 'symbol');
-        }
+    initCharts() {
+        this.chartOptions = {
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Time'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Amount'
+                },
+                labels: {
+                    format: '{value} ₹'
+                }
+            },
+            chart: {
+                height: 300,
+                type: 'spline',
+                spacing: [10,0,0,0]
+            },
+            title: {
+                text: undefined
+            },
+            series: [],
+            credits: {
+                enabled: false
+            }
+        };
     }
 
 }

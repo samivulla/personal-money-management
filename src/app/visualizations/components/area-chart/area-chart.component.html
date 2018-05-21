@@ -1,5 +1,11 @@
 <mat-card>
-    <div style="height: 300px">
+    <highcharts-chart 
+        [Highcharts]="highcharts"
+        [options]="chartOptions"
+        [(update)]="updateChart"
+        [constructorType]="'chart'">
+    </highcharts-chart>
+    <!-- <div style="height: 300px">
         <ngx-charts-area-chart-stacked
             [scheme]="colorScheme"
             [results]="results"
@@ -15,6 +21,5 @@
             [gradient]="true">
             </ngx-charts-area-chart-stacked>
         <div *ngIf="!dataAvail" class="no-data"><span>No Data</span></div>
-    </div>
+    </div> -->
 </mat-card>
-    

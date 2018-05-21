@@ -45,16 +45,24 @@ export class VisualizationComponent implements OnInit {
 
     makeAreaChartData(data: Transaction[]) {
         return ['FOOD', 'OTHERS', 'SHOPPING'].map((type) => {
-            return { name: type, series: this.areaChartDataAggregator(data, type) };
+            return { name: type, data: this.areaChartDataAggregator(data, type) };
         });
     }
 
     private areaChartDataAggregator(data, type) {
         return data.filter(val => val.transasctionType.id === type)
             .reduce((acc, val) => {
-                let item = acc.find(accVal => accVal.name === val.date);
-                if (item) item.value += val.moneySpent;
-                else acc.push({ name: val.date, value: val.moneySpent });
+                let item = acc.find((accVal) => { 
+                    let sourceDate = accVal.x.getDate(), 
+                    sourceMonth = accVal.x.getMonth(),
+                        sourceYear = accVal.x.getFullYear(),
+                        targetDate = val.date.getDate(),
+                        targetMonth = val.date.getMonth(),
+                        targetYear = val.date.getFullYear();
+                    return sourceDate === targetDate && sourceMonth === targetMonth && sourceYear === targetYear;
+                });
+                if (item) item.y += val.moneySpent;
+                else acc.push({ x: val.date, y: val.moneySpent });
                 return acc;
             }, []);
     }
