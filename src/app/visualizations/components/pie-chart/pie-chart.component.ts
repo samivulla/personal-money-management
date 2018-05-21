@@ -1,6 +1,13 @@
-import { Component, ChangeDetectionStrategy, Input, Inject } from '@angular/core';
+import {
+    Component,
+    ChangeDetectionStrategy,
+    Input,
+    Inject,
+    SimpleChanges
+} from '@angular/core';
 import { COLOR_SETS } from '../../services';
 import { CurrencyPipe } from '@angular/common';
+import * as Highcharts from 'highcharts';
 
 @Component({
     selector: 'app-pie-chart',
@@ -9,20 +16,49 @@ import { CurrencyPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieChartComponent {
-    
+
     @Input()
-    results: { name: string, value: number }[];
+    results: any;
+    highcharts: any;
+    chartOptions: any;
+    updateChart: boolean;
 
-    showXAxis = true;
-    showYAxis = true;
-    gradient = false;
-    showLegend = true;
-    showXAxisLabel = true;
-    xAxisLabel = 'Categories';
-    showYAxisLabel = true;
-    yAxisLabel = 'Money';
-    SCHEME_NAME = 'neons';
-    colorScheme = (this.colorSet as Array<any>).find(val => val.name === this.SCHEME_NAME);
+    constructor() {
+        this.highcharts = Highcharts;
+        this.initCharts();
+    }
 
-    constructor(@Inject(COLOR_SETS) private colorSet ) { }
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.results && changes.results.currentValue) {
+            this.chartOptions.series = [this.results];
+            this.updateChart = true;
+        }
+    }
+
+    initCharts() {
+        this.chartOptions = {
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'pie',
+                height: 300
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    showInLegend: true
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}</b><br/>',
+                valueSuffix: ' ₹',
+            },
+            title: {
+                text: undefined
+            },
+            series: []
+        };
+    }
 }

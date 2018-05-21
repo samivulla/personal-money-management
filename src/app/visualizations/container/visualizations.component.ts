@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState, getTransactions } from '../../store';
 import { Transaction } from '../../models';
@@ -10,15 +10,19 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: './visualizations.component.html',
     styleUrls: ['./visualizations.component.css']
 })
-export class VisualizationComponent implements OnInit {
+export class VisualizationComponent implements OnInit, OnDestroy {
 
     private transactions$: Observable<Transaction[]>;
     private subscription: Subscription;
-    barChartData: { name: string; value: number }[];
-    areaChartData;
+    barChartData: any;
+    areaChartData: any;
 
     constructor(private store: Store<AppState>) {
         this.transactions$ = this.store.pipe(select(getTransactions));
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     ngOnInit() {
@@ -37,10 +41,12 @@ export class VisualizationComponent implements OnInit {
             else { acc[transactionId] = val.moneySpent; }
             return acc;
         }, {});
-        return Object.keys(reducedData)
-            .map((transactionType: string) => {
-                return { name: transactionType, value: reducedData[transactionType] };
-            });
+
+        return {
+            name: 'Total expenses',
+            data: Object.keys(reducedData)
+                .map((transactionType: string) => ({ name: transactionType, y: reducedData[transactionType] }));
+        }
     }
 
     makeAreaChartData(data: Transaction[]) {
@@ -52,9 +58,9 @@ export class VisualizationComponent implements OnInit {
     private areaChartDataAggregator(data, type) {
         return data.filter(val => val.transasctionType.id === type)
             .reduce((acc, val) => {
-                let item = acc.find((accVal) => { 
-                    let sourceDate = accVal.x.getDate(), 
-                    sourceMonth = accVal.x.getMonth(),
+                let item = acc.find((accVal) => {
+                    let sourceDate = accVal.x.getDate(),
+                        sourceMonth = accVal.x.getMonth(),
                         sourceYear = accVal.x.getFullYear(),
                         targetDate = val.date.getDate(),
                         targetMonth = val.date.getMonth(),
@@ -64,7 +70,12 @@ export class VisualizationComponent implements OnInit {
                 if (item) item.y += val.moneySpent;
                 else acc.push({ x: val.date, y: val.moneySpent });
                 return acc;
-            }, []);
+            }, [])
+            .sort((a, b) => {
+                if (a.x < b.x) { return -1; }
+                else if (a.x > b.x) { return 1; }
+                else if (a.x === b.x) { return 0; }
+            });
     }
 
 }                                          
